@@ -16,6 +16,5 @@
 #include <arduino.h>
 #include <pins_arduino.h> 
 #include "..\StarLed2.ino"
-#include "..\Globals.ino"
 #endif
 #endif

@@ -21,10 +21,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StarLed2.ino" />
-    <ClCompile Include="Globals.ino" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.StarLed2.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

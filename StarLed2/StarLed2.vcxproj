@@ -86,10 +86,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Globals.ino">
-      <FileType>CppCode</FileType>
-      <DeploymentContent>true</DeploymentContent>
-    </ClCompile>
     <None Include="src\arduino folders read me.txt">
     </None>
   </ItemGroup>
@@ -97,6 +93,7 @@
     <ProjectCapability Include="VisualMicro" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Globals2.h" />
     <ClInclude Include="__vm\.StarLed2.vsarduino.h" />
   </ItemGroup>
   <PropertyGroup>
