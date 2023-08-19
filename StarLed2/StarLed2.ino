@@ -6,6 +6,7 @@
 
 #include <FastLED.h>
 #include "Globals2.h"
+#include "raySkyBalls.h"
 
 void setup() {
 
@@ -47,27 +48,20 @@ void transition(bool init) {
     starPattern = NULL;
     rayPattern = NULL;
 
-    //Serial.println("In transition");
     for (int i = 0; i < 150; i++) {
         fade_raw(starLeds, cStarLedsCount, 2);
         fade_raw(rayLeds, cRayLedsCount, 2);
         FastLED.show();
-        //delay(10);
     }
     nextPattern();
-    //Serial.println("Out transition");
-
 }
 
 void nextPattern()
 {
     // add one to the current pattern number, and wrap around at the end
     starPatternNo = (starPatternNo + 1) % ARRAY_SIZE(starPatterns);
-    //Serial.print("patternNo = "); Serial.println(starPatternNo);
 
     starPattern = starPatterns[starPatternNo];
-
-
     starPattern(true);
 
-}
+};
