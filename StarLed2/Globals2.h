@@ -22,6 +22,7 @@
     const uint8_t STAR_DATA_PIN = 4;
     const uint8_t RAYS_DATA_PIN = 5;
 
+
     // Define the array of leds
     CRGB starLeds[cStarLedsCount];
     CRGB rayLeds[cRayLedsCount];

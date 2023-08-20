@@ -8,15 +8,15 @@
 #include "Globals2.h"
 #include "raySkyBalls.h"
 
+    CLEDController& starLedController = FastLED.addLeds<LED_TYPE, STAR_DATA_PIN, COLOR_ORDER>(starLeds, cStarLedsCount);
+    CLEDController& raysLedController = FastLED.addLeds<LED_TYPE, RAYS_DATA_PIN, COLOR_ORDER>(rayLeds, cRayLedsCount);
+
 void setup() {
 
     static uint8_t startIndex = 0;
 
     //Serial.begin(115200);
     delay(3000);
-
-    CLEDController& starLedController = FastLED.addLeds<LED_TYPE, STAR_DATA_PIN, COLOR_ORDER>(starLeds, cStarLedsCount);
-    CLEDController& raysLedController = FastLED.addLeds<LED_TYPE, RAYS_DATA_PIN, COLOR_ORDER>(rayLeds, cRayLedsCount);
 
     FastLED.clear(true);
     starPattern = starPatterns[0];
