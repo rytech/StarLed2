@@ -9,6 +9,7 @@
 	#include "WProgram.h"
 #endif
 
+    #define RDEBUG = 1
 
     #define LED_TYPE    WS2811
     #define COLOR_ORDER GRB
@@ -16,12 +17,12 @@
 
     #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
 
+
     const uint8_t cStarLedsCount = 80;
     const uint8_t cRayLedsCount = 70;
 
     const uint8_t STAR_DATA_PIN = 4;
     const uint8_t RAYS_DATA_PIN = 5;
-
 
     // Define the array of leds
     CRGB starLeds[cStarLedsCount];
@@ -29,7 +30,26 @@
     CRGB starTransLeds[cStarLedsCount];
     CHSV hsvStarLeds[cStarLedsCount];
 
-    CEveryNSeconds starTimer(20);
+    CLEDController& starLedController = FastLED.addLeds<LED_TYPE, STAR_DATA_PIN, COLOR_ORDER>(starLeds, cStarLedsCount);
+    CLEDController& raysLedController = FastLED.addLeds<LED_TYPE, RAYS_DATA_PIN, COLOR_ORDER>(rayLeds, cRayLedsCount);
+
+
+    //CEveryNSeconds starTimer(20);
+
+    void raySkyBalls(bool init);
+    //void rayTracer(bool);
+
+    typedef void (*ptrRayPattern)(bool);
+    ptrRayPattern rayPattern = raySkyBalls; // 
+
+    typedef void (*rayPatternList[])(bool);
+    rayPatternList rayPatterns = {
+        //rayTracer,
+        raySkyBalls,
+    };
+
+    typedef void (*ptrStarPattern)(bool);
+    ptrStarPattern starPattern;
 
     //void transition(bool init);
     //void starRainbow(bool init);
@@ -41,12 +61,6 @@
     //void Fire2012(bool init);
     //void starPulse(bool init);
     //void lj_starBlend(bool init);
-
-    typedef void (*ptrRayPattern)(bool);
-    ptrRayPattern rayPattern = nullptr; // rayTracer;
-
-    typedef void (*ptrStarPattern)(bool);
-    ptrStarPattern starPattern;
 
     typedef void (*starPatternList[])(bool);
     starPatternList starPatterns = {
@@ -60,7 +74,6 @@
     };
 
     uint8_t starPatternNo = 0;
-
 
 #endif
 

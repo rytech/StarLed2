@@ -8,39 +8,56 @@
 #include "Globals2.h"
 #include "raySkyBalls.h"
 
-    CLEDController& starLedController = FastLED.addLeds<LED_TYPE, STAR_DATA_PIN, COLOR_ORDER>(starLeds, cStarLedsCount);
-    CLEDController& raysLedController = FastLED.addLeds<LED_TYPE, RAYS_DATA_PIN, COLOR_ORDER>(rayLeds, cRayLedsCount);
-
 void setup() {
 
-    static uint8_t startIndex = 0;
-
-    //Serial.begin(115200);
+    Serial.begin(115200);
     delay(3000);
 
     FastLED.clear(true);
-    starPattern = starPatterns[0];
-    starPattern(true);
+    //starPattern = starPatterns[0];
+    //starPattern(true);
+    //rayPattern(true);
+    // 
 
+    rayPattern = raySkyBalls;
+
+    //D(Serial.printf("This is a debug message\n"));
+    //Serial.println("This is a debug message");
+    //Serial.printf("This is a debug message using printf\n");
+
+    //SkyBall redBall = SkyBall(HUE_RED, cRayLedsCount, 20, 200);
+    //for (int i = 0 ; i < cRayLedsCount; ++i) {
+    //    unsigned long x = redBall.calcDelay(i);
+    //    Serial.print("led = ");
+    //    Serial.print(i);
+    //    Serial.print("delay = ");
+    //    Serial.println(x);
+    //}
+    Serial.println("Setup out");
+    //FastLED.showColor(CRGB(0X00, 0X00, 0xFF));
 }
 
 void loop() {
-  
 
-    EVERY_N_MILLISECONDS(30) {
-        // Call the current pattern function once, updating the 'leds' array
-        if (starPattern) {
-            starPattern(false);
-        }
-        if (rayPattern) {
-            rayPattern(false);
-        }
-        FastLED.show();
+    //if (starTimer.ready()) {
+    //    starPattern = transition;
+    //}
+    // 
+    if (starPattern) {
+        starPattern(false);
     }
+    if (rayPattern) {
+        rayPattern(false);
+    }
+    //FastLED.show();
 
-    if (starTimer.ready()) {
-        starPattern = transition;
-    }
+    //Serial.println("rayPattern to be called");
+    //rayPattern(true);
+
+    //int x = 10;
+    //delay(5000);
+    transition(false);
+    //Serial.println("loop out");
 }
 
 
@@ -48,9 +65,11 @@ void transition(bool init) {
     starPattern = NULL;
     rayPattern = NULL;
 
+    Serial.println("transition in");
+    delay(500);
     for (int i = 0; i < 150; i++) {
-        fade_raw(starLeds, cStarLedsCount, 2);
-        fade_raw(rayLeds, cRayLedsCount, 2);
+        fade_raw(starLeds, cStarLedsCount, 4);
+        fade_raw(rayLeds, cRayLedsCount, 4);
         FastLED.show();
     }
     nextPattern();
@@ -58,10 +77,16 @@ void transition(bool init) {
 
 void nextPattern()
 {
+    Serial.println("nextPattern in");
+
     // add one to the current pattern number, and wrap around at the end
-    starPatternNo = (starPatternNo + 1) % ARRAY_SIZE(starPatterns);
+    //starPatternNo = (starPatternNo + 1) % ARRAY_SIZE(starPatterns);
 
-    starPattern = starPatterns[starPatternNo];
-    starPattern(true);
+    //starPattern = starPatterns[starPatternNo];
+    //starPattern(true);
+    
+    // for test purposes
+    rayPattern = raySkyBalls;
+    rayPattern(true);
+}
 
-};
