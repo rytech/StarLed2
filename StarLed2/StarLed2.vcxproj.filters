@@ -32,5 +32,8 @@
     <ClInclude Include="raySkyBalls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="rayMeteor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

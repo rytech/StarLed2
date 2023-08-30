@@ -94,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals2.h" />
+    <ClInclude Include="rayMeteor.h" />
     <ClInclude Include="raySkyBalls.h" />
     <ClInclude Include="__vm\.StarLed2.vsarduino.h" />
   </ItemGroup>

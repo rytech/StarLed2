@@ -31,7 +31,7 @@
     CHSV hsvStarLeds[cStarLedsCount];
 
     CLEDController& starLedController = FastLED.addLeds<LED_TYPE, STAR_DATA_PIN, COLOR_ORDER>(starLeds, cStarLedsCount);
-    CLEDController& raysLedController = FastLED.addLeds<LED_TYPE, RAYS_DATA_PIN, COLOR_ORDER>(rayLeds, cRayLedsCount);
+    CLEDController& rayLedController = FastLED.addLeds<LED_TYPE, RAYS_DATA_PIN, COLOR_ORDER>(rayLeds, cRayLedsCount);
 
 
     //CEveryNSeconds starTimer(20);

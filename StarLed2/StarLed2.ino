@@ -7,6 +7,7 @@
 #include <FastLED.h>
 #include "Globals2.h"
 #include "raySkyBalls.h"
+#include "rayMeteor.h"
 
 void setup() {
 

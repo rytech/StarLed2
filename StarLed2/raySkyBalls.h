@@ -39,7 +39,7 @@ public:
 	int showPattern() {
 
 		if (millis() >= targetTime) {
-			//raysLedController.clearLedData();
+			//rayLedController.clearLedData();
 			if (direction >= 0) {
 				if (++currentLedNo >= ledsCount - 1) {
 					direction = -1;
@@ -93,7 +93,7 @@ void raySkyBalls(bool init = false) {
 
 		//Serial.println("raySkyBalls 1");
 		fadeToBlackBy(rayLeds, cRayLedsCount, 0x10);
-		raysLedController.showLeds();
+		rayLedController.showLeds();
 		//Serial.println("raySkyBalls 2");
 	}
 }
