@@ -39,7 +39,7 @@ public:
 	int showPattern() {
 
 		if (millis() >= targetTime) {
-			raysLedController.clearLedData();
+			//raysLedController.clearLedData();
 			if (direction >= 0) {
 				if (++currentLedNo >= ledsCount - 1) {
 					direction = -1;
@@ -53,9 +53,9 @@ public:
 			rayLeds[currentLedNo] = color;
 			unsigned long x = calcDelay(currentLedNo);
 			targetTime = millis() + calcDelay(currentLedNo);
-			return 1;		// refresh ray leds
+			return currentLedNo;
 		}
-		return 0;			// refresh not needed
+		return currentLedNo;
 	};
 };
 
@@ -66,29 +66,35 @@ public:
 
 void raySkyBalls(bool init = false) {
 	int refresh = 0;
-	SkyBall redBall = SkyBall(HUE_RED, cRayLedsCount, 10, 75);
-	SkyBall greenBall = SkyBall(HUE_GREEN, cRayLedsCount*3/4, 10, 75);
-	SkyBall blueBall = SkyBall(HUE_BLUE, cRayLedsCount*2/3, 10, 75);
+	SkyBall redBall = SkyBall(HUE_RED, cRayLedsCount, 10, 50);
+	SkyBall greenBall = SkyBall(HUE_GREEN, cRayLedsCount*9/10, 10, 40);
+	SkyBall blueBall = SkyBall(HUE_BLUE, cRayLedsCount*8/10, 10, 30);
 
 	//redBall.showPattern();
 	//Serial.println("raySkyBalls in");
-	while (true) {
+	while (true && rayPattern) {
 		EVERY_N_SECONDS(10) {
 			// stop the pattern after 10 seconds
 			rayPattern = NULL;
 			return;
 		}
+		int redLed = -1;
+		int greenLed = -1;
+		int blueLed = -1;
 
-		refresh = redBall.showPattern();
-		refresh += greenBall.showPattern();
-		refresh += blueBall.showPattern();
-		if (refresh) {
-			//Serial.println("raySkyBalls 1");
-			//raysLedController.showLeds();
-			FastLED.show();
-			refresh = 0;
-	//Serial.println("raySkyBalls 2");
-		}
+		redLed = redBall.showPattern();
+		rayLeds[redLed] = redBall.color;
+
+		greenLed = greenBall.showPattern();
+		rayLeds[greenLed] = greenBall.color;
+
+		blueLed = blueBall.showPattern();
+		rayLeds[blueLed] = blueBall.color;
+
+		//Serial.println("raySkyBalls 1");
+		fadeToBlackBy(rayLeds, cRayLedsCount, 0x10);
+		raysLedController.showLeds();
+		//Serial.println("raySkyBalls 2");
 	}
 }
 
