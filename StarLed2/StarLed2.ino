@@ -20,7 +20,7 @@ void setup() {
     //rayPattern(true);
     // 
 
-    rayPattern = raySkyBalls;
+    rayPattern = rayMeteorRain;
 
     //D(Serial.printf("This is a debug message\n"));
     //Serial.println("This is a debug message");
@@ -87,7 +87,7 @@ void nextPattern()
     //starPattern(true);
     
     // for test purposes
-    rayPattern = raySkyBalls;
+    rayPattern = rayMeteorRain;
     rayPattern(true);
 }
 
