@@ -9,22 +9,84 @@
 #else
 	#include "WProgram.h"
 #endif
-    void rayMeteorRain(bool init);
+    void rayMeteor(bool init);
     void meteorRain(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean metcRayLedsCounteorRandomDecay, int SpeedDelay);
     //void fadeToBlack(int ledNo, byte fadeValue);
     void setPixel(int ledNo, byte red, byte green, byte blue);
     void setAll(byte green, byte red, byte blue);
 
-    void rayMeteorRain(bool init = false) {
-        if (init) {
+    class Meteor {
+    public :
+        uint8_t len{ 10 };
+        uint8_t endPos{ len - 1 };
+        CRGB color{ CRGB(0xFF, 0, 0) };
+        uint8_t decayRate{ 0xA0 };
+
+        int draw() {
+            if (endPos + len >= cRayLedsCount) {
+                return 0;
+            }
+            for (int i = endPos; i < endPos + len; i++) {
+                rayLeds[i] = color;
+            }
+            endPos++;
+
+            // draw trail
+            return 1;
+        }
+
+        void trailDecay() {
+            for (int j = endPos; j >= 0; j--) {
+                if (random(10) > 5) {
+                    //fadeToBlack(j, meteorTrailDecay);
+                    rayLeds[j].fadeToBlackBy(decayRate);
+                }
+            }
+        }
+
+        void fin() {
+            for (int j = 0; j < 10 ; j++) {
+                //if (random(10) > 5) {
+                    fadeToBlackBy(rayLeds, cRayLedsCount, 0x20);
+                    rayLedController.showLeds();
+                //}
+            }
+        }
+
+        void update() {
             fadeToBlackBy(rayLeds, cRayLedsCount, 0xFF);    //set all ray leds to black
-            rayLedController.showLeds(0);
-            delay(50);
+            int cont = 1;
+            while (cont) {
+                trailDecay();
+                cont = draw();
+                rayLedController.showLeds();
+                delay(50);
+            }
+            fin();
+        }
+    };
+
+    void rayMeteor(bool init = false) {
+        Meteor meteor = Meteor();
+        EVERY_N_SECONDS(10) {
+            // stop the pattern after 10 seconds
+            rayPattern = NULL;
             return;
         }
-        meteorRain(0, 0, 0xff, 10, 0xA0, true, 10);
+        while (rayPattern) {
+            //while (true) {
+                fadeToBlackBy(rayLeds, cRayLedsCount, 0xFF);    //set all ray leds to black
+                meteor.trailDecay();
+                if (meteor.draw()) {
+                    rayLedController.showLeds();
+                    delay(50);
+                }
+                else {
+                    meteor.fin();
+                }
+            //}
+        }
     }
-
 
     void meteorRain(byte green, byte red, byte blue, 
         byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay) {
@@ -53,7 +115,7 @@
                 }
             }
             //showStrip();
-            delay(SpeedDelay);
+            //delay(SpeedDelay);
         }
     }
 
