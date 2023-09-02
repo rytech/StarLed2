@@ -17,74 +17,99 @@
 
     class Meteor {
     public :
-        uint8_t len{ 10 };
-        uint8_t endPos{ len - 1 };
+        uint8_t len{ 4 };
+        uint8_t endPos{ 0 };
         CRGB color{ CRGB(0xFF, 0, 0) };
-        uint8_t decayRate{ 0xA0 };
+        uint8_t decayRate{ 0xc0 };
 
-        int draw() {
-            if (endPos + len >= cRayLedsCount) {
-                return 0;
+        void draw() {
+            int maxLed = cRayLedsCount -1;
+            int len2 = len;
+            for (endPos = 0; endPos <= maxLed + len; endPos++) {
+               for (int j = 0; j < len; j++) {
+                    rayLeds[endPos+j] = color;
+                   if (endPos + j > maxLed) {
+                   }
+                   //else {
+                   //    endPos--;
+                   //    for (int x = len - 1; x >= 0; x--) {
+                   //        rayLeds[endPos+x] = color;
+                   //    }
+                   //}
+               }
+               //decay
+                for (int j = endPos; j >= 0; j--) {
+                    if (random(10) > 5) {
+                        //fadeToBlack(j, meteorTrailDecay);
+                        rayLeds[j].fadeToBlackBy(decayRate);
+                    }
+                }
+                rayLedController.showLeds();
+                delay(50);
             }
-            for (int i = endPos; i < endPos + len; i++) {
-                rayLeds[i] = color;
-            }
-            endPos++;
+            //int copyLen = len;
+            //if (endPos >= cRayLedsCount) {
+            //    endPos = cRayLedsCount - 1;
+            //    return 0;
+            //}
+            //for (int i = endPos; i < cRayLedsCount; i++) {
+            //    rayLeds[i] = color;
+            //}
+            //endPos++;
 
-            // draw trail
-            return 1;
+            //// draw trail
+            //return 1;
         }
 
         void trailDecay() {
-            for (int j = endPos; j >= 0; j--) {
-                if (random(10) > 5) {
+            delay(200);
+            for (int j = cRayLedsCount - 1 ; j >= 0; j--) {
+                if (random(10) > 3) {
                     //fadeToBlack(j, meteorTrailDecay);
                     rayLeds[j].fadeToBlackBy(decayRate);
                 }
             }
+            rayLedController.showLeds();
         }
 
-        void fin() {
-            for (int j = 0; j < 10 ; j++) {
-                //if (random(10) > 5) {
-                    fadeToBlackBy(rayLeds, cRayLedsCount, 0x20);
-                    rayLedController.showLeds();
-                //}
-            }
-        }
+        //void fin() {
+        //    for (int j = 0; j < 10 ; j++) {
+        //        //if (random(10) > 5) {
+        //            fadeToBlackBy(rayLeds, cRayLedsCount, 0xF0);
+        //            rayLedController.showLeds();
+        //            delay(100);
+        //        //}
+        //    }
+        //}
 
-        void update() {
-            fadeToBlackBy(rayLeds, cRayLedsCount, 0xFF);    //set all ray leds to black
-            int cont = 1;
-            while (cont) {
-                trailDecay();
-                cont = draw();
-                rayLedController.showLeds();
-                delay(50);
-            }
-            fin();
-        }
+        //void update() {
+        //    fadeToBlackBy(rayLeds, cRayLedsCount, 0xFF);    //set all ray leds to black
+        //    int cont = 1;
+        //    while (cont) {
+        //        trailDecay();
+        //        cont = draw();
+        //        rayLedController.showLeds();
+        //        delay(50);
+        //    }
+        //    trailDecay();
+        //}
     };
 
     void rayMeteor(bool init = false) {
         Meteor meteor = Meteor();
-        EVERY_N_SECONDS(10) {
-            // stop the pattern after 10 seconds
-            rayPattern = NULL;
-            return;
-        }
         while (rayPattern) {
-            //while (true) {
-                fadeToBlackBy(rayLeds, cRayLedsCount, 0xFF);    //set all ray leds to black
+            EVERY_N_SECONDS(10) {
+                // stop the pattern after 10 seconds
+                rayPattern = NULL;
+                return;
+            }
+            //fadeToBlackBy(rayLeds, cRayLedsCount, 0xFF);    //set all ray leds to black
+            meteor.trailDecay();
+            meteor.draw();
+            for (int i = 0; i < 10; i++) {
                 meteor.trailDecay();
-                if (meteor.draw()) {
-                    rayLedController.showLeds();
-                    delay(50);
-                }
-                else {
-                    meteor.fin();
-                }
-            //}
+            }
+            //delay(50);
         }
     }
 
