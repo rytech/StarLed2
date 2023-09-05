@@ -33,6 +33,8 @@
     CLEDController& starLedController = FastLED.addLeds<LED_TYPE, STAR_DATA_PIN, COLOR_ORDER>(starLeds, cStarLedsCount);
     CLEDController& rayLedController = FastLED.addLeds<LED_TYPE, RAYS_DATA_PIN, COLOR_ORDER>(rayLeds, cRayLedsCount);
 
+    uint8_t starHue{ 15 };
+    uint8_t rayHue{ 34 };
 
     //CEveryNSeconds starTimer(20);
 

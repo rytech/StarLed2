@@ -21,27 +21,24 @@
         CLEDController* pController;
         CRGB* leds;
         uint8_t maxPos;
-
-        void Test() {
-            for (int i = 0; i < maxPos; i++) {
-                leds[i] = CRGB(0x0, 0xFF, 0x0);
-            }
-            pController->showLeds();
-        }
+        uint8_t hue;
 
         Meteor() :
-            endPos(0), color(CRGB(0xFF, 0, 0)), decayRate(0xC0), pController(nullptr),
+            endPos(0), decayRate(0xC0), pController(nullptr),
             leds(nullptr), maxPos(0)
         {};
 
-        Meteor(CLEDController* _pController, CRGB* _leds, uint8_t ledsCount, uint8_t _decayRate) : 
-            pController(_pController), leds(_leds), decayRate(_decayRate)
+        Meteor(CLEDController* _pController, CRGB* _leds, uint8_t ledsCount, uint8_t _decayRate, uint8_t _hue) : 
+            pController(_pController), leds(_leds), decayRate(_decayRate), hue(_hue)
         {
             maxPos = ledsCount-1;
+            color = CHSV(rayHue, 0xFF, 0xFF);
         };
 
         void draw() {
+            color = CHSV(rayHue, 0xFF, 0xFF);
             for (endPos = 0; endPos <= maxPos; endPos++) {
+                rayHue += 10;
                 if (endPos + len > maxPos) {
                     for (int j = 0; j + endPos < maxPos ; j++) {
                         leds[endPos + j] = color;
@@ -79,16 +76,13 @@
     //
     //
 
-    void rayMeteor(bool init = false) {
-
-        Meteor meteor = Meteor(&rayLedController, rayLeds, cRayLedsCount, 0xC0);
+    void meteorShow(Meteor& meteor) {
         while (rayPattern) {
             EVERY_N_SECONDS(10) {
                 // stop the pattern after 10 seconds
                 rayPattern = NULL;
                 return;
             }
-            //fadeToBlackBy(rayLeds, cRayLedsCount, 0xFF);    //set all ray leds to black
             meteor.trailDecay();
             meteor.draw();
             delay(200);
@@ -96,5 +90,18 @@
                 meteor.trailDecay();
             }
         }
+    }
+    void rayMeteor(bool init = false) {
+
+        Meteor meteor = Meteor(&rayLedController, rayLeds, cRayLedsCount, 0xC0, rayHue);
+        meteorShow(meteor);
+
+    }
+
+    void starMeteor(bool init = false) {
+
+        Meteor meteor = Meteor(&starLedController, starLeds, cStarLedsCount, 0xC0, rayHue);
+        meteorShow(meteor);
+
     }
 
