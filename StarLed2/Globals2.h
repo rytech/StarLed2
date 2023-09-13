@@ -36,46 +36,14 @@
     uint8_t starHue{ 15 };
     uint8_t rayHue{ 34 };
 
+    TaskHandle_t starTask;
+    TaskHandle_t rayTask;
+
+
     //CEveryNSeconds starTimer(20);
 
     void raySkyBalls(bool init);
     //void rayTracer(bool);
-
-    typedef void (*ptrRayPattern)(bool);
-    ptrRayPattern rayPattern = raySkyBalls; // 
-
-    typedef void (*rayPatternList[])(bool);
-    rayPatternList rayPatterns = {
-        //rayTracer,
-        raySkyBalls,
-    };
-
-    typedef void (*ptrStarPattern)(bool);
-    ptrStarPattern starPattern;
-
-    //void transition(bool init);
-    //void starRainbow(bool init);
-    //void starDotty(bool init);
-    //void rayTracer(bool init);
-    //void starSingleColor(bool init);
-    //void confetti(bool bInit);
-    //void starShift(bool init);
-    //void Fire2012(bool init);
-    //void starPulse(bool init);
-    //void lj_starBlend(bool init);
-
-    typedef void (*starPatternList[])(bool);
-    starPatternList starPatterns = {
-        //starDotty, transition, 
-        //starRainbow, transition,
-        //starSingleColor, transition, 
-        //confetti, transition, 
-        //starPulse, transition, 
-        //lj_starBlend, transition
-
-    };
-
-    uint8_t starPatternNo = 0;
 
 #endif
 

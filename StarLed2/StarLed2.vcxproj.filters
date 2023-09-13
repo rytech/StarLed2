@@ -32,7 +32,10 @@
     <ClInclude Include="raySkyBalls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rayMeteor.h">
+    <ClInclude Include="Meteor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tasks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

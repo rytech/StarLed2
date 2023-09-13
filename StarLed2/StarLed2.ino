@@ -6,63 +6,69 @@
 
 #include <FastLED.h>
 #include "Globals2.h"
+#include <vector>
+#include "Tasks.h"
 #include "raySkyBalls.h"
-#include "rayMeteor.h"
+#include "Meteor.h"
 
 void setup() {
 
-    Serial.begin(115200);
+    Serial.begin(56000);
+    while (!Serial);
+    //delay(3000);
+    Serial.println("debug message");
+
+    //TaskHandle_t Task1; // create a task handle
+    //xTaskCreatePinnedToCore(
+    //    Task1code, // function to implement the task
+    //    "Task1", // name of the task
+    //    10000, // stack size in words
+    //    NULL, // task input parameter
+    //    0, // priority of the task
+    //    &Task1, // task handle
+    //    0); // core where the task should run
+    xTaskCreatePinnedToCore(starTaskCode, "StarTask", 10000, NULL, 2, &starTask, 1);
+    xTaskCreatePinnedToCore(rayTaskCode, "RayTask", 10000, NULL, 2, &rayTask, 1);
+    
     delay(3000);
+    //vTaskDelay(3000 / portTICK_PERIOD_MS);
 
     FastLED.clear(true);
+
+
     //starPattern = starPatterns[0];
     //starPattern(true);
     //rayPattern(true);
     // 
 
-    rayPattern = rayMeteor;
+    //rayPattern = rayMeteor;
 
     //D(Serial.printf("This is a debug message\n"));
     //Serial.println("This is a debug message");
     //Serial.printf("This is a debug message using printf\n");
 
-    //SkyBall redBall = SkyBall(HUE_RED, cRayLedsCount, 20, 200);
-    //for (int i = 0 ; i < cRayLedsCount; ++i) {
-    //    unsigned long x = redBall.calcDelay(i);
-    //    Serial.print("led = ");
-    //    Serial.print(i);
-    //    Serial.print("delay = ");
-    //    Serial.println(x);
-    //}
+    nextPattern();
+
     Serial.println("Setup out");
     //FastLED.showColor(CRGB(0X00, 0X00, 0xFF));
 }
 
 void loop() {
+    while (true) {
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        Serial.println("loop started");
+        while (starPattern) {
+            vTaskDelay(1000 / portTICK_PERIOD_MS);
+        }
+        rayPattern = NULL;
 
-    //if (starTimer.ready()) {
-    //    starPattern = transition;
-    //}
-    // 
-    if (starPattern) {
-        starPattern(false);
+        transition();
+        //Serial.println("loop out");
     }
-    if (rayPattern) {
-        rayPattern(false);
-    }
-    //FastLED.show();
-
-    //Serial.println("rayPattern to be called");
-    //rayPattern(true);
-
-    //int x = 10;
-    //delay(5000);
-    transition(false);
-    //Serial.println("loop out");
 }
 
 
-void transition(bool init) {
+void transition() {
     starPattern = NULL;
     rayPattern = NULL;
 
@@ -81,13 +87,10 @@ void nextPattern()
     Serial.println("nextPattern in");
 
     // add one to the current pattern number, and wrap around at the end
-    //starPatternNo = (starPatternNo + 1) % ARRAY_SIZE(starPatterns);
+    runItemNo = (runItemNo + 1) % runList.size();  //ARRAY_SIZE(starPatterns);
 
-    //starPattern = starPatterns[starPatternNo];
-    //starPattern(true);
-    
-    // for test purposes
-    rayPattern = rayMeteor;
-    rayPattern(true);
+    starPattern = runList[runItemNo].starPattern;
+    rayPattern = runList[runItemNo].rayPattern;
+    patternRunTime = runList[runItemNo].runTime;
 }
 
