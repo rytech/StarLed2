@@ -80,6 +80,7 @@
     <TargetOSAndVersion>Arduino</TargetOSAndVersion>
   </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="rayTracer.cpp" />
     <ClCompile Include="StarLed2.ino">
       <FileType>CppCode</FileType>
       <DeploymentContent>true</DeploymentContent>
@@ -94,8 +95,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Globals2.h" />
-    <ClInclude Include="Meteor.h" />
-    <ClInclude Include="raySkyBalls.h" />
+    <ClInclude Include="rayTracer.h" />
+    <ClInclude Include="starRainbow.h" />
     <ClInclude Include="Tasks.h" />
     <ClInclude Include="__vm\.StarLed2.vsarduino.h" />
   </ItemGroup>

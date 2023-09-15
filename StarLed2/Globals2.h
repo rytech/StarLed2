@@ -9,7 +9,12 @@
 	#include "WProgram.h"
 #endif
 
-    #define RDEBUG = 1
+//#include "raySkyBalls.h"
+//#include "Meteor.h"
+//#include "starRainbow.h"
+//#include "rayTracer.h"
+
+#define RDEBUG = 1
 
     #define LED_TYPE    WS2811
     #define COLOR_ORDER GRB
@@ -40,9 +45,7 @@
     TaskHandle_t rayTask;
 
 
-    //CEveryNSeconds starTimer(20);
-
-    void raySkyBalls(bool init);
+    //void raySkyBalls(bool init);
     //void rayTracer(bool);
 
 #endif

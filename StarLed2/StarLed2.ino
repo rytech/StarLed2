@@ -7,9 +7,11 @@
 #include <FastLED.h>
 #include "Globals2.h"
 #include <vector>
+//#include "raySkyBalls.h"
+//#include "Meteor.h"
+#include "starRainbow.h"
+#include "rayTracer.h"
 #include "Tasks.h"
-#include "raySkyBalls.h"
-#include "Meteor.h"
 
 void setup() {
 
@@ -81,6 +83,9 @@ void transition() {
     }
     nextPattern();
 }
+
+uint8_t runItemNo = -1;
+int patternRunTime = 0;
 
 void nextPattern()
 {

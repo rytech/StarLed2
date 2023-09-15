@@ -21,6 +21,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StarLed2.ino" />
+    <ClCompile Include="rayTracer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.StarLed2.vsarduino.h">
@@ -29,13 +32,13 @@
     <ClInclude Include="Globals2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="raySkyBalls.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Meteor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Tasks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="starRainbow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="rayTracer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

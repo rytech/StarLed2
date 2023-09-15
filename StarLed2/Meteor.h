@@ -32,7 +32,7 @@
             pController(_pController), leds(_leds), decayRate(_decayRate), hue(_hue)
         {
             maxPos = ledsCount-1;
-            color = CHSV(rayHue, 0xFF, 0xFF);
+            color = CHSV(15, 0xFF, 0xFF);
         };
 
         void draw() {
@@ -94,14 +94,28 @@
     void rayMeteor(bool init = false) {
 
         Meteor meteor = Meteor(&rayLedController, rayLeds, cRayLedsCount, 0xC0, rayHue);
-        meteorShow(meteor);
+        //meteorShow(meteor);
+        while (rayPattern) {
+            EVERY_N_SECONDS(10) {
+                // stop the pattern after 10 seconds
+                rayPattern = NULL;
+                return;
+            }
+            meteor.trailDecay();
+            meteor.draw();
+            vTaskDelay(200);
+            for (int i = 0; i < 15; i++) {
+                meteor.trailDecay();
+            }
+        }
+
 
     }
 
-    void starMeteor(bool init = false) {
+    //void starMeteor(bool init = false) {
 
-        Meteor meteor = Meteor(&starLedController, starLeds, cStarLedsCount, 0xC0, rayHue);
-        meteorShow(meteor);
+    //    Meteor meteor = Meteor(&starLedController, starLeds, cStarLedsCount, 0xC0, rayHue);
+    //    meteorShow(meteor);
 
-    }
+    //}
 

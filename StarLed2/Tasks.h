@@ -13,31 +13,24 @@
 //
 //
 
+    void starTaskCode(void* pvParameters);
+    void rayTaskCode(void* pvParameters);
+
+    void starPattern1(bool init);
+    void starPattern2(bool init);
+    void rayPattern1(bool init);
+    void rayPattern2(bool init);
+
+    CEveryNSeconds starPatternTimer(20);
+
     typedef void (*ptrRayPattern)(bool);
     ptrRayPattern rayPattern = NULL; // 
-
-    typedef void (*rayPatternList[])(bool);
-    rayPatternList rayPatterns = {
-        //rayTracer,
-        //raySkyBalls,
-    };
 
     typedef void (*ptrStarPattern)(bool);
     ptrStarPattern starPattern;
 
-    //void transition(bool init);
-    //void starRainbow(bool init);
-    //void starDotty(bool init);
-    //void rayTracer(bool init);
-    //void starSingleColor(bool init);
-    //void confetti(bool bInit);
-    //void starShift(bool init);
-    //void Fire2012(bool init);
-    //void starPulse(bool init);
-    //void lj_starBlend(bool init);
-
-    typedef void (*starPatternList[])(bool);
-    starPatternList starPatterns = {
+    //typedef void (*starPatternList[])(bool);
+    //starPatternList starPatterns = {
         //starDotty, transition, 
         //starRainbow, transition,
         //starSingleColor, transition, 
@@ -45,10 +38,45 @@
         //starPulse, transition, 
         //lj_starBlend, transition
 
+    //};
+
+    struct runItem {
+        ptrStarPattern starPattern;
+        ptrRayPattern rayPattern;
+        int runTime;
     };
 
-    uint8_t runItemNo = 0;
-    int patternRunTime = 0;
+    std::vector<runItem> runList{
+        {starRainbow, rayTracer, 10},
+        {starPattern2, rayPattern2, 10}
+    };
+
+
+
+
+    void starTaskCode(void* pvParameters) {
+        while (1) {
+            Serial.println("This is StarTask");
+            if (starPattern) {
+                starPattern(true);
+            }
+            else {
+                vTaskDelay(1000);
+            }
+        }
+    }
+
+    void rayTaskCode(void* pvParameters) {
+        while (1) {
+            Serial.println("This is RayTask");
+            if (rayPattern) {
+                rayPattern(true);
+            }
+            else {
+                vTaskDelay(1000 / portTICK_PERIOD_MS);
+            }
+        }
+    }
 
     void starPattern1(bool init) {
         if (init) {
@@ -114,45 +142,6 @@
         }
     }
 
-    struct runItem {
-        ptrStarPattern starPattern;
-        ptrRayPattern rayPattern;
-        int runTime;
-    };
-
-    std::vector<runItem> runList {
-        {starPattern1, rayPattern1, 10},
-        {starPattern2, rayPattern2, 10}
-    };
-
-void starTaskCode(void* pvParameters);
-void rayTaskCode(void* pvParameters);
-
-
-
-void starTaskCode(void* pvParameters) {
-    while (1) {
-        Serial.println("This is StarTask");
-        if (starPattern) {
-            starPattern(true);
-        }
-        else {
-		    vTaskDelay(1000 / portTICK_PERIOD_MS);
- 		}
-    }
-}
-
-void rayTaskCode(void* pvParameters) {
-	while (1) {
-		Serial.println("This is RayTask");
-        if (rayPattern) {
-            rayPattern(true);
-         }
-        else {
-		    vTaskDelay(1000 / portTICK_PERIOD_MS);
-        }
-	}
-}
 
 #endif
 
