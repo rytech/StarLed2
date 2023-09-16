@@ -5,17 +5,17 @@
 */
 
 #include <FastLED.h>
-#include "Globals2.h"
 #include <vector>
+#include "Globals2.h"
+#include "Tasks.h"
 //#include "raySkyBalls.h"
 //#include "Meteor.h"
 #include "starRainbow.h"
 #include "rayTracer.h"
-#include "Tasks.h"
 
 void setup() {
 
-    Serial.begin(56000);
+    Serial.begin(9600);
     while (!Serial);
     //delay(3000);
     Serial.println("debug message");
@@ -32,8 +32,10 @@ void setup() {
     xTaskCreatePinnedToCore(starTaskCode, "StarTask", 10000, NULL, 2, &starTask, 1);
     xTaskCreatePinnedToCore(rayTaskCode, "RayTask", 10000, NULL, 2, &rayTask, 1);
     
-    delay(3000);
-    //vTaskDelay(3000 / portTICK_PERIOD_MS);
+    createRunList();
+
+    //delay(3000);
+    vTaskDelay(3000);
 
     FastLED.clear(true);
 
@@ -57,10 +59,10 @@ void setup() {
 
 void loop() {
     while (true) {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        vTaskDelay(1000);
         Serial.println("loop started");
         while (starPattern) {
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
+            vTaskDelay(1000);
         }
         rayPattern = NULL;
 
@@ -99,3 +101,7 @@ void nextPattern()
     patternRunTime = runList[runItemNo].runTime;
 }
 
+void createRunList() {
+    runList.push_back(runItem{ starRainbow, rayTracer, 10});
+    runList.push_back(runItem{ starPattern2, rayPattern2, 10 });
+}

@@ -44,6 +44,25 @@
     TaskHandle_t starTask;
     TaskHandle_t rayTask;
 
+    CEveryNSeconds starPatternTimer(20);
+
+    typedef void (*ptrRayPattern)(bool);
+    ptrRayPattern rayPattern = NULL; // 
+
+    typedef void (*ptrStarPattern)(bool);
+    ptrStarPattern starPattern = NULL;
+
+    struct runItem {
+        ptrStarPattern starPattern;
+        ptrRayPattern rayPattern;
+        int runTime;
+    };
+
+    std::vector<runItem> runList;
+    //    {starRainbow, rayTracer, 10},
+    //    {starPattern2, rayPattern2, 10}
+    //};
+
 
     //void raySkyBalls(bool init);
     //void rayTracer(bool);

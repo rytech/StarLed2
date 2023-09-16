@@ -21,14 +21,6 @@
     void rayPattern1(bool init);
     void rayPattern2(bool init);
 
-    CEveryNSeconds starPatternTimer(20);
-
-    typedef void (*ptrRayPattern)(bool);
-    ptrRayPattern rayPattern = NULL; // 
-
-    typedef void (*ptrStarPattern)(bool);
-    ptrStarPattern starPattern;
-
     //typedef void (*starPatternList[])(bool);
     //starPatternList starPatterns = {
         //starDotty, transition, 
@@ -40,23 +32,12 @@
 
     //};
 
-    struct runItem {
-        ptrStarPattern starPattern;
-        ptrRayPattern rayPattern;
-        int runTime;
-    };
-
-    std::vector<runItem> runList{
-        {starRainbow, rayTracer, 10},
-        {starPattern2, rayPattern2, 10}
-    };
-
 
 
 
     void starTaskCode(void* pvParameters) {
         while (1) {
-            Serial.println("This is StarTask");
+            //Serial.println("This is StarTask");
             if (starPattern) {
                 starPattern(true);
             }

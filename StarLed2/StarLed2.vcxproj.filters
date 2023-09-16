@@ -21,9 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StarLed2.ino" />
-    <ClCompile Include="rayTracer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.StarLed2.vsarduino.h">

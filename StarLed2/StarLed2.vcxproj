@@ -80,7 +80,6 @@
     <TargetOSAndVersion>Arduino</TargetOSAndVersion>
   </PropertyGroup>
   <ItemGroup>
-    <ClCompile Include="rayTracer.cpp" />
     <ClCompile Include="StarLed2.ino">
       <FileType>CppCode</FileType>
       <DeploymentContent>true</DeploymentContent>

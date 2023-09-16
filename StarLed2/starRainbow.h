@@ -16,25 +16,27 @@ void lj_fill_rainbow(struct CRGB* pFirstLED, int numToFill, uint8_t initialhue, 
 void starRainbow(bool init = 0)
 {
     uint8_t lHue = 0;
+    CEveryNSeconds patternTimer(5);
 
     if (init) {
-        starPatternTimer.setPeriod(10);
+        Serial.println("starRainbow init");
     }
-
+    Serial.println("starRainbow in");
     while(1) {
-        if (starPatternTimer) {
+        if (patternTimer.ready()) {
             starPattern = NULL;
+            Serial.println("starRainbow out");
             return;
         }
         // FastLED's built-in rainbow generator
         lj_fill_rainbow(starLeds, cStarLedsCount, lHue += 3, 3);
-        vTaskDelay(5);
+        vTaskDelay(100);
     }
 }
 
 void lj_fill_rainbow(struct CRGB* pFirstLED, int numToFill, uint8_t initialhue, uint8_t deltahue)
 {
-    CHSV hsv(initialhue, 250, 150);
+    static CHSV hsv(initialhue, 250, 150);
     for (uint8_t i = 0; i < numToFill; ++i) {
         pFirstLED[numToFill - i - 1] = hsv;
         hsv.hue += deltahue;
