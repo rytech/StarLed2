@@ -16,37 +16,29 @@ void rayTracer(bool init = 0) {
     uint8_t hue = 20;
     uint8_t pos = 0;
     uint8_t prevPos;
+    //CEveryNSeconds patternTimer(10);
 
     if (init) {
+        //Serial.println("rayTracer init");
         prevPos = pos;
         init = false;
     }
-    Serial.println("rayTracer");
-    while (true) {
-        EVERY_N_SECONDS(10) {
-            // stop the pattern after 10 seconds
-            rayPattern = NULL;
-            return;
-        }
-        //Serial.println("rayTracwe");
+    //Serial.println("rayTracer");
+    while (true && rayPattern) {
+        //Serial.println("rayTracer init");
         fadeToBlackBy(rayLeds, cRayLedsCount, 50);
-        pos = beatsin16(8, 0, cRayLedsCount - 1);
+        pos = beat8(30);
         if (pos == prevPos) {
-            ;
+            Serial.println("rayTracer no change");
+            break;
         }
-        else if (pos < prevPos) {
-            prevPos = pos;
-            pos -= cRayLedsCount - 1;
-            pos *= -1;
-            rayLeds[pos] += CHSV(hue += 2, 255, 192);
-            //Serial.print("pos desc = ");
-            //Serial.println(pos);
-            //return;
-        }
-        //prevPos = pos;
-        //rayLeds[pos] += CHSV(hue += 2, 255, 192);
-        vTaskDelay(100);
+        prevPos = pos;
+        int ledNo = (pos * cRayLedsCount) / 255;
+        rayLeds[ledNo] += CHSV(hue += 2, 255, 192);
+        rayLedController.showLeds();
+        vTaskDelay(20);
     }
+    //Serial.println("rayTracer out");
 }
 
 

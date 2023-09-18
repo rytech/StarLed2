@@ -15,10 +15,9 @@
 
 void setup() {
 
-    Serial.begin(9600);
+    Serial.begin(38400);
     while (!Serial);
-    //delay(3000);
-    Serial.println("debug message");
+    //Serial.println("debug message");
 
     //TaskHandle_t Task1; // create a task handle
     //xTaskCreatePinnedToCore(
@@ -33,39 +32,21 @@ void setup() {
     xTaskCreatePinnedToCore(rayTaskCode, "RayTask", 10000, NULL, 2, &rayTask, 1);
     
     createRunList();
-
-    //delay(3000);
     vTaskDelay(3000);
-
     FastLED.clear(true);
-
-
-    //starPattern = starPatterns[0];
-    //starPattern(true);
-    //rayPattern(true);
-    // 
-
-    //rayPattern = rayMeteor;
-
-    //D(Serial.printf("This is a debug message\n"));
-    //Serial.println("This is a debug message");
-    //Serial.printf("This is a debug message using printf\n");
-
     nextPattern();
 
     Serial.println("Setup out");
-    //FastLED.showColor(CRGB(0X00, 0X00, 0xFF));
 }
 
 void loop() {
     while (true) {
         vTaskDelay(1000);
-        Serial.println("loop started");
+        //Serial.println("loop started");
         while (starPattern) {
-            vTaskDelay(1000);
+            vTaskDelay(100);
         }
         rayPattern = NULL;
-
         transition();
         //Serial.println("loop out");
     }
@@ -76,7 +57,7 @@ void transition() {
     starPattern = NULL;
     rayPattern = NULL;
 
-    Serial.println("transition in");
+    //Serial.println("transition in");
     delay(500);
     for (int i = 0; i < 150; i++) {
         fade_raw(starLeds, cStarLedsCount, 4);
@@ -91,7 +72,7 @@ int patternRunTime = 0;
 
 void nextPattern()
 {
-    Serial.println("nextPattern in");
+    //` Serial.println("nextPattern in");
 
     // add one to the current pattern number, and wrap around at the end
     runItemNo = (runItemNo + 1) % runList.size();  //ARRAY_SIZE(starPatterns);
@@ -103,5 +84,5 @@ void nextPattern()
 
 void createRunList() {
     runList.push_back(runItem{ starRainbow, rayTracer, 10});
-    runList.push_back(runItem{ starPattern2, rayPattern2, 10 });
+    //runList.push_back(runItem{ starPattern2, rayPattern2, 10 });
 }

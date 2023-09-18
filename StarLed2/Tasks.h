@@ -49,12 +49,12 @@
 
     void rayTaskCode(void* pvParameters) {
         while (1) {
-            Serial.println("This is RayTask");
+            //Serial.println("This is RayTask");
             if (rayPattern) {
                 rayPattern(true);
             }
             else {
-                vTaskDelay(1000 / portTICK_PERIOD_MS);
+                vTaskDelay(1000);
             }
         }
     }
