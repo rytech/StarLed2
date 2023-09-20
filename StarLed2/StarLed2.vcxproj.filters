@@ -38,5 +38,11 @@
     <ClInclude Include="rayTracer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="confetti.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="raySkyBalls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

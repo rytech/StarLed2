@@ -8,10 +8,10 @@
 #include <vector>
 #include "Globals2.h"
 #include "Tasks.h"
-//#include "raySkyBalls.h"
-//#include "Meteor.h"
 #include "starRainbow.h"
 #include "rayTracer.h"
+#include "confetti.h"
+#include "raySkyBalls.h"
 
 void setup() {
 
@@ -41,7 +41,7 @@ void setup() {
 
 void loop() {
     while (true) {
-        vTaskDelay(1000);
+        vTaskDelay(200);
         //Serial.println("loop started");
         while (starPattern) {
             vTaskDelay(100);
@@ -58,7 +58,7 @@ void transition() {
     rayPattern = NULL;
 
     //Serial.println("transition in");
-    delay(500);
+    vTaskDelay(500);
     for (int i = 0; i < 150; i++) {
         fade_raw(starLeds, cStarLedsCount, 4);
         fade_raw(rayLeds, cRayLedsCount, 4);
@@ -84,5 +84,5 @@ void nextPattern()
 
 void createRunList() {
     runList.push_back(runItem{ starRainbow, rayTracer, 10});
-    //runList.push_back(runItem{ starPattern2, rayPattern2, 10 });
+    runList.push_back(runItem{ starConfetti, raySkyBalls, 10 });
 }

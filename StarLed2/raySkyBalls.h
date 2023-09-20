@@ -73,11 +73,11 @@ void raySkyBalls(bool init = false) {
 	//redBall.showPattern();
 	//Serial.println("raySkyBalls in");
 	while (true && rayPattern) {
-		EVERY_N_SECONDS(10) {
-			// stop the pattern after 10 seconds
-			rayPattern = NULL;
-			return;
-		}
+		//EVERY_N_SECONDS(10) {
+		//	// stop the pattern after 10 seconds
+		//	rayPattern = NULL;
+		//	return;
+		//}
 		int redLed = -1;
 		int greenLed = -1;
 		int blueLed = -1;

@@ -21,11 +21,9 @@ void starRainbow(bool init = 0)
     if (init) {
         Serial.println("starRainbow init");
     }
-    Serial.println("starRainbow in");
     while(1) {
         if (patternTimer.ready()) {
             starPattern = NULL;
-            Serial.println("starRainbow out");
             return;
         }
         // FastLED's built-in rainbow generator
