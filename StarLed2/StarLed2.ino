@@ -8,10 +8,13 @@
 #include <vector>
 #include "Globals2.h"
 #include "Tasks.h"
-#include "starRainbow.h"
-#include "rayTracer.h"
-#include "confetti.h"
 #include "raySkyBalls.h"
+#include "starPatterns.h"
+#include "rayPatterns.h"
+//#include "starRainbow.h"
+//#include "rayTracer.h"
+//#include "confetti.h"
+//#include "starSparkle.h"
 
 void setup() {
 
@@ -83,6 +86,6 @@ void nextPattern()
 }
 
 void createRunList() {
-    runList.push_back(runItem{ starRainbow, rayTracer, 10});
-    runList.push_back(runItem{ starConfetti, raySkyBalls, 10 });
+    runList.push_back(runItem{ starRainbow, rayJuggle, 10});
+    runList.push_back(runItem{ starSparkle, raySkyBalls, 10 });
 }

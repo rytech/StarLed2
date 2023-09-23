@@ -32,13 +32,10 @@
     <ClInclude Include="Tasks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="starRainbow.h">
+    <ClInclude Include="starPatterns.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="rayTracer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="confetti.h">
+    <ClInclude Include="rayPatterns.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="raySkyBalls.h">
