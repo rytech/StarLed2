@@ -13,7 +13,8 @@ void starRainbow(bool init);
 void lj_fill_rainbow(struct CRGB* pFirstLED, int numToFill, uint8_t initialhue, uint8_t deltahue);
 void starConfetti(bool init);
 void starSparkle(bool init);
-void bpm(bool init);
+void starShift(bool init);
+void starNova(bool init);
 //void juggle(bool init);
 
 
@@ -26,7 +27,7 @@ void bpm(bool init);
 
 void starRainbow(bool init = 0)
 {
-    uint8_t lHue = 20;
+    //uint8_t lHue = 20;
     CEveryNSeconds patternTimer(10);
 
     if (init) {
@@ -38,7 +39,7 @@ void starRainbow(bool init = 0)
             return;
         }
         // FastLED's built-in rainbow generator
-        fill_rainbow(starLeds, cStarLedsCount, lHue +=3, 3);
+        fill_rainbow(starLeds, cStarLedsCount, starHue +=3, 3);
         starLedController.showLeds();
         //lj_fill_rainbow(starLeds, cStarLedsCount, lHue += 3, 3);
         vTaskDelay(100);
@@ -61,10 +62,8 @@ void starConfetti(bool init = false)
 
     while (true) {
         if (init) {
-            //Serial.println("starRainbow init");
+            ;
         }
-        //Serial.println("starRainbow in");
-        //uint8_t hue = 10;
         if (patternTimer.ready()) {
             starPattern = NULL;
             return;
@@ -106,18 +105,39 @@ void starSparkle(bool init = 0)
     }
 }
 
-//void Strobe(byte red, byte green, byte blue, int StrobeCount, int FlashDelay, int EndPause) {
-//    for (int j = 0; j < StrobeCount; j++) {
-//        setAll(red, green, blue);
-//        showStrip();
-//        delay(FlashDelay);
-//        setAll(0, 0, 0);
-//        showStrip();
-//        delay(FlashDelay);
-//    }
-//
-//    delay(EndPause);
-//}
+void starNova(bool init = false) {
+    int FlashOnDelay = 80;
+    int FlashOffDelay = 100;
+    int EndPause = 2000;
+    int flashCount = 6;
+    //CEveryNSeconds patternTimer(10);
+
+    if (init) {
+        init = false;
+    }
+    //while (1) {
+        //if (patternTimer.ready()) {
+        //    starPattern = NULL;
+        //    return;
+        //}
+        for (int j = 0; j < flashCount; j++) {
+            fill_solid(starLeds, cStarLedsCount, CRGB(64, 64, 64));
+            starLedController.showLeds();
+            vTaskDelay(FlashOnDelay);
+            fill_solid(starLeds, cStarLedsCount, CRGB(0, 0, 0));
+            starLedController.showLeds();
+            vTaskDelay(FlashOffDelay);
+        }
+        fill_solid(starLeds, cStarLedsCount, CRGB(250, 250, 250));
+        starLedController.showLeds();
+        vTaskDelay(EndPause);
+        fill_solid(starLeds, cStarLedsCount, CRGB(0, 0, 0));
+        starLedController.showLeds();
+        starPattern = NULL;
+        return;
+    //}
+    //delay(EndPause);
+}
 
 //void RunningLights(byte red, byte green, byte blue, int WaveDelay) {
 //    int Position = 0;
@@ -236,7 +256,7 @@ void bpm(bool init = false)
 //        vTaskDelay(20);
 //    }
 //}
-//
+
 //void starPulse(bool init = false) {
 //
 //    //static CHSV bufferLeds[cStarLedsCount];
@@ -266,42 +286,47 @@ void bpm(bool init = false)
 //
 //}
 
-//void starShift(bool init = false) {
-//
-//    if (init) {
-//        for (int i = 0; i < cStarLedsCount; ) {
-//            if (i >= cStarLedsCount) break;
-//            starLeds[i++] = CRGB(0xFF0000);
-//            if (i >= cStarLedsCount) break;
-//            starLeds[i++] = CRGB(0xFF8000);
-//            if (i >= cStarLedsCount) break;
-//            starLeds[i++] = CRGB(0x00FF00);
-//            if (i >= cStarLedsCount) break;
-//            starLeds[i++] = CRGB(0x00FF80);
-//            if (i >= cStarLedsCount) break;
-//            starLeds[i++] = CRGB(0x0000FF);
-//            if (i >= cStarLedsCount) break;
-//            starLeds[i++] = CRGB(0x8000FF);
-//            if (i >= cStarLedsCount) break;
-//            starLeds[i++] = CRGB(0x000000);
-//            if (i >= cStarLedsCount) break;
-//            starLeds[i++] = CRGB(0x000000);
-//        }
-//        fade_video(starLeds, cStarLedsCount, 2250);
-//        delay(250);
-//        starTimer.setPeriod(10);
-//        //starTimer.reset();
-//    }
-//    else {
-//        CRGB save = starLeds[cStarLedsCount - 1];
-//        for (int i = cStarLedsCount - 1; i > 0; i--) {
-//            starLeds[i] = starLeds[i - 1];
-//        }
-//        starLeds[0] = save;
-//        delay(150);
-//    }
-//}
-//
+void starShift(bool init = false) {
+    CEveryNSeconds patternTimer(10);
+
+    while (true) {
+        if (init) {
+            for (int i = 0; i < cStarLedsCount; ) {
+                if (i >= cStarLedsCount) break;
+                starLeds[i++] = CRGB(0xFF0000);
+                if (i >= cStarLedsCount) break;
+                starLeds[i++] = CRGB(0xFF8000);
+                if (i >= cStarLedsCount) break;
+                starLeds[i++] = CRGB(0x00FF00);
+                if (i >= cStarLedsCount) break;
+                starLeds[i++] = CRGB(0x00FF80);
+                if (i >= cStarLedsCount) break;
+                starLeds[i++] = CRGB(0x0000FF);
+                if (i >= cStarLedsCount) break;
+                starLeds[i++] = CRGB(0x8000FF);
+                if (i >= cStarLedsCount) break;
+                starLeds[i++] = CRGB(0x000000);
+                if (i >= cStarLedsCount) break;
+                starLeds[i++] = CRGB(0x000000);
+            }
+            init = false;
+        }
+
+        if (patternTimer.ready()) {
+            starPattern = NULL;
+            return;
+        }
+
+        CRGB save = starLeds[cStarLedsCount - 1];
+        for (int i = cStarLedsCount - 1; i > 0; i--) {
+            starLeds[i] = starLeds[i - 1];
+        }
+        starLeds[0] = save;
+        starLedController.showLeds();
+        vTaskDelay(150);
+    }
+}
+
 
 #endif
 

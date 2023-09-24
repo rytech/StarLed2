@@ -16,11 +16,6 @@
     void starTaskCode(void* pvParameters);
     void rayTaskCode(void* pvParameters);
 
-    void starPattern1(bool init);
-    void starPattern2(bool init);
-    void rayPattern1(bool init);
-    void rayPattern2(bool init);
-
     //typedef void (*starPatternList[])(bool);
     //starPatternList starPatterns = {
         //starDotty, transition, 
@@ -32,9 +27,6 @@
 
     //};
 
-
-
-
     void starTaskCode(void* pvParameters) {
         while (1) {
             //Serial.println("This is StarTask");
@@ -42,7 +34,7 @@
                 starPattern(true);
             }
             else {
-                vTaskDelay(1000);
+                vTaskDelay(100);
             }
         }
     }
@@ -54,75 +46,10 @@
                 rayPattern(true);
             }
             else {
-                vTaskDelay(1000);
+                vTaskDelay(100);
             }
         }
     }
-
-    void starPattern1(bool init) {
-        if (init) {
-            init = false;
-        }
-        while (true) {
-            EVERY_N_SECONDS(10) {
-                // stop the pattern after 10 seconds
-                starPattern = NULL;
-                Serial.println("starPattern1 out");
-                return;
-            }
-            Serial.println("starPattern1");
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
-        }
-    }
-
-    void starPattern2(bool init) {
-        if (init) {
-            init = false;
-        }
-        while (true) {
-            EVERY_N_SECONDS(10) {
-                // stop the pattern after 10 seconds
-                starPattern = NULL;
-                return;
-            }
-            Serial.println("starPattern2");
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
-        }
-
-    }
-
-    void rayPattern1(bool init) {
-        if (init) {
-            init = false;
-        }
-        Serial.println("rayPattern1");
-        while (true) {
-            EVERY_N_SECONDS(10) {
-                // stop the pattern after 10 seconds
-                rayPattern = NULL;
-                return;
-            }
-            Serial.println("rayPattern1a");
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
-        }
-    }
-
-    void rayPattern2(bool init) {
-        if (init) {
-            init = false;
-        }
-        Serial.println("rayPattern2");
-        while (true) {
-            EVERY_N_SECONDS(10) {
-                // stop the pattern after 10 seconds
-                rayPattern = NULL;
-                return;
-            }
-            Serial.println("rayPattern2a");
-            vTaskDelay(1000 / portTICK_PERIOD_MS);
-        }
-    }
-
 
 #endif
 
