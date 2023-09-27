@@ -15,8 +15,11 @@ void starConfetti(bool init);
 void starSparkle(bool init);
 void starShift(bool init);
 void starNova(bool init);
-//void juggle(bool init);
+void juggle(bool init);
+void theaterChaseRainbow(bool init);
 
+// helper function
+uint8_t* Wheel(uint8_t WheelPos);
 
 //void starRainbow(bool bInit = false)
 //{
@@ -139,7 +142,7 @@ void starNova(bool init = false) {
     //delay(EndPause);
 }
 
-//void RunningLights(byte red, byte green, byte blue, int WaveDelay) {
+//void RunningLights(uint8_t red, uint8_t green, uint8_t blue, int WaveDelay) {
 //    int Position = 0;
 //
 //    for (int i = 0; i < NUM_LEDS * 2; i++)
@@ -160,26 +163,63 @@ void starNova(bool init = false) {
 //    }
 //}
 
-//
-//void theaterChaseRainbow(int SpeedDelay) {
-//    byte* c;
-//
-//    for (int j = 0; j < 256; j++) {     // cycle all 256 colors in the wheel
-//        for (int q = 0; q < 3; q++) {
-//            for (int i = 0; i < NUM_LEDS; i = i + 3) {
-//                c = Wheel((i + j) % 255);
-//                setPixel(i + q, *c, *(c + 1), *(c + 2));    //turn every third pixel on
-//            }
-//            showStrip();
-//
-//            delay(SpeedDelay);
-//
-//            for (int i = 0; i < NUM_LEDS; i = i + 3) {
-//                setPixel(i + q, 0, 0, 0);        //turn every third pixel off
-//            }
-//        }
-//    }
-//}
+
+void theaterChaseRainbow(bool init = true) {
+
+    uint8_t* c;
+    CEveryNSeconds patternTimer(10);
+
+    while (1) {
+        if (init) {
+            init = false;
+        }
+
+        for (int j = 0; j < 256; j++) {     // cycle all 256 colors in the wheel
+            for (int q = 0; q < 3; q++) {
+                for (int i = 0; i < cStarLedsCount; i = i + 3) {
+                    c = Wheel((i + j) % 255);
+                    starLeds[i + q] = CRGB(*c, *(c + 1), *(c + 2));    //turn every third pixel on
+                }
+                starLedController.showLeds();
+
+                delay(50);
+
+                for (int i = 0; i < cStarLedsCount; i = i + 3) {
+                    starLeds[i+q] = CRGB(0, 0, 0);
+                }
+                if (patternTimer.ready()) {
+                    starPattern = NULL;
+                    return;
+                }
+            }
+        }
+    }
+}
+
+// used by rainbowCycle and theaterChaseRainbow
+uint8_t* Wheel(uint8_t WheelPos) {
+    static uint8_t c[3];
+
+    if (WheelPos < 85) {
+        c[0] = WheelPos * 3;
+        c[1] = 255 - WheelPos * 3;
+        c[2] = 0;
+    }
+    else if (WheelPos < 170) {
+        WheelPos -= 85;
+        c[0] = 255 - WheelPos * 3;
+        c[1] = 0;
+        c[2] = WheelPos * 3;
+    }
+    else {
+        WheelPos -= 170;
+        c[0] = 0;
+        c[1] = WheelPos * 3;
+        c[2] = 255 - WheelPos * 3;
+    }
+
+    return c;
+}
 
 //void rainbowWithGlitter()
 //{
@@ -234,28 +274,28 @@ void bpm(bool init = false)
     }
 }
 
-//// eight colored dots, weaving in and out of sync with each other
-//void juggle(bool init = false) {
-//    CEveryNSeconds patternTimer(10);
-//
-//    while (true) {
-//        if (init) {
-//            ;
-//        }
-//        if (patternTimer.ready()) {
-//            starPattern = NULL;
-//            return;
-//        }
-//        fadeToBlackBy(starLeds, cStarLedsCount, 75);
-//        byte dothue = 0;
-//        for (int i = 0; i < 8; i++) {
-//            starLeds[beatsin16(i + 7, 0, cStarLedsCount - 1)] |= CHSV(dothue, 200, 255);
-//            dothue += 32;
-//        }
-//        starLedController.showLeds();
-//        vTaskDelay(20);
-//    }
-//}
+// eight colored dots, weaving in and out of sync with each other
+void juggle(bool init = false) {
+    CEveryNSeconds patternTimer(10);
+
+    while (true) {
+        if (init) {
+            ;
+        }
+        if (patternTimer.ready()) {
+            starPattern = NULL;
+            return;
+        }
+        fadeToBlackBy(starLeds, cStarLedsCount, 75);
+        uint8_t dothue = 0;
+        for (int i = 0; i < 8; i++) {
+            starLeds[beatsin16(i + 7, 0, cStarLedsCount - 1)] |= CHSV(dothue, 200, 255);
+            dothue += 32;
+        }
+        starLedController.showLeds();
+        vTaskDelay(20);
+    }
+}
 
 //void starPulse(bool init = false) {
 //

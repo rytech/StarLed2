@@ -18,21 +18,21 @@ void rayTracer(bool init = 0) {
 
 	uint8_t hue = 20;
 	uint8_t pos = 0;
-	uint8_t prevPos;
+	uint8_t prevPos = 0;
+	uint32_t timebase = millis() & 0xFFFFFF00;
 	//CEveryNSeconds patternTimer(10);
 
 	if (init) {
 		//Serial.println("rayTracer init");
-		prevPos = pos;
+		//prevPos = pos;
 		init = false;
 	}
 	//Serial.println("rayTracer");
 	while (true && rayPattern) {
 		//Serial.println("rayTracer init");
 		fadeToBlackBy(rayLeds, cRayLedsCount, 50);
-		pos = beat8(30);
+		pos = beat8(30, timebase);
 		if (pos == prevPos) {
-			Serial.println("rayTracer no change");
 			break;
 		}
 		prevPos = pos;
@@ -71,8 +71,9 @@ void raySkyBalls(bool init = false) {
 		rayLeds[blueLed] = blueBall.color;
 
 		//Serial.println("raySkyBalls 1");
-		fadeToBlackBy(rayLeds, cRayLedsCount, 0x10);
+		fadeToBlackBy(rayLeds, cRayLedsCount, 0x20);
 		rayLedController.showLeds();
+		vTaskDelay(10);
 		//Serial.println("raySkyBalls 2");
 	}
 }

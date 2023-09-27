@@ -86,6 +86,6 @@ void nextPattern()
 }
 
 void createRunList() {
-    runList.push_back(runItem{ strobe, raySkyBalls, 10});
-    //runList.push_back(runItem{ strobe, NULL, 10});
+    runList.push_back(runItem{ juggle, rayTracer, 10});
+    runList.push_back(runItem{ theaterChaseRainbow, raySkyBalls, 10});
 }
