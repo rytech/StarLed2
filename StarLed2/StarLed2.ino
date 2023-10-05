@@ -18,7 +18,7 @@
 
 void setup() {
 
-    Serial.begin(38400);
+    Serial.begin(115200);
     while (!Serial);
     //Serial.println("debug message");
 
@@ -82,10 +82,13 @@ void nextPattern()
 
     starPattern = runList[runItemNo].starPattern;
     rayPattern = runList[runItemNo].rayPattern;
-    patternRunTime = runList[runItemNo].runTime;
+    //patternRunTime = runList[runItemNo].runTime;
 }
 
 void createRunList() {
-    runList.push_back(runItem{ juggle, rayTracer, 10});
+    runList.push_back(runItem{ starBlend, rayTracer, 10});
+    runList.push_back(runItem{ juggle, rayWhiteTracer, 10});
     runList.push_back(runItem{ theaterChaseRainbow, raySkyBalls, 10});
+    runList.push_back(runItem{ starShift, rayWhiteTracer, 10});
+    runList.push_back(runItem{ starConfetti, raySkyBalls, 10});
 }

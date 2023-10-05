@@ -10,6 +10,7 @@
 #endif
 
 void rayTracer(bool init);
+void rayWhiteTracer(bool init);
 void raySkyBalls(bool init);
 void rayJuggle(bool init);
 
@@ -38,6 +39,30 @@ void rayTracer(bool init = 0) {
 		prevPos = pos;
 		int ledNo = (pos * cRayLedsCount) / 255;
 		rayLeds[ledNo] += CHSV(hue += 2, 255, 192);
+		rayLedController.showLeds();
+		vTaskDelay(20);
+	}
+}
+
+void rayWhiteTracer(bool init = 0) {
+
+	uint8_t pos = 0;
+	uint8_t prevPos = 0;
+	uint32_t timebase = millis() & 0xFFFFFF00;
+
+	Serial.println("rayWhiteTracer in");
+	//if (init) {
+	//	init = false;
+	//}
+	while (true && rayPattern) {
+		fadeToBlackBy(rayLeds, cRayLedsCount, 50);
+		pos = beat8(30, timebase);
+		if (pos == prevPos) {
+			break;
+		}
+		prevPos = pos;
+		int ledNo = (pos * cRayLedsCount) / 255;
+		rayLeds[ledNo] = CRGB(200, 200, 200);
 		rayLedController.showLeds();
 		vTaskDelay(20);
 	}
@@ -136,6 +161,22 @@ void rayJuggle(bool init = false) {
 //        dothue += 32;
 //    }
 //}
+
+void rayConfetti(bool init = false)
+{
+	if (init) {
+		;
+	}
+	while (true && starPattern) {
+		// random colored speckles that blink in and fade smoothly
+		fadeToBlackBy(rayLeds, cRayLedsCount, 20);
+		int pos = random16(cRayLedsCount);
+		rayLeds[pos] += CHSV(starHue + random8(64), 200, 255);
+		rayLedController.showLeds();
+		vTaskDelay(100);
+	}
+	rayPattern = NULL;
+}
 
 
 #endif

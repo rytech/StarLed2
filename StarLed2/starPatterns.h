@@ -63,18 +63,18 @@ void starConfetti(bool init = false)
 {
     CEveryNSeconds patternTimer(10);
 
+    if (init) {
+        ;
+    }
     while (true) {
-        if (init) {
-            ;
-        }
         if (patternTimer.ready()) {
             starPattern = NULL;
             return;
         }
         // random colored speckles that blink in and fade smoothly
-        fadeToBlackBy(starLeds, cStarLedsCount, 10);
+        fadeToBlackBy(starLeds, cStarLedsCount, 30);
         int pos = random16(cStarLedsCount);
-        starLeds[pos] += CHSV(starHue + random8(64), 200, 255);
+        starLeds[pos] += CHSV(starHue + random8(128), 200, 255);
         starLedController.showLeds();
         vTaskDelay(50);
     }
@@ -169,11 +169,11 @@ void theaterChaseRainbow(bool init = true) {
     uint8_t* c;
     CEveryNSeconds patternTimer(10);
 
-    while (1) {
-        if (init) {
-            init = false;
-        }
+    if (init) {
+        init = false;
+    }
 
+    while (1) {
         for (int j = 0; j < 256; j++) {     // cycle all 256 colors in the wheel
             for (int q = 0; q < 3; q++) {
                 for (int i = 0; i < cStarLedsCount; i = i + 3) {
@@ -182,7 +182,7 @@ void theaterChaseRainbow(bool init = true) {
                 }
                 starLedController.showLeds();
 
-                delay(50);
+                delay(100);
 
                 for (int i = 0; i < cStarLedsCount; i = i + 3) {
                     starLeds[i+q] = CRGB(0, 0, 0);
@@ -276,12 +276,13 @@ void bpm(bool init = false)
 
 // eight colored dots, weaving in and out of sync with each other
 void juggle(bool init = false) {
-    CEveryNSeconds patternTimer(10);
 
+    CEveryNSeconds patternTimer(10);
+ 
+    if (init) {
+        ;
+    }
     while (true) {
-        if (init) {
-            ;
-        }
         if (patternTimer.ready()) {
             starPattern = NULL;
             return;
@@ -363,7 +364,56 @@ void starShift(bool init = false) {
         }
         starLeds[0] = save;
         starLedController.showLeds();
-        vTaskDelay(150);
+        vTaskDelay(100);
+    }
+}
+
+void blend(uint8_t& val1, uint8_t val2) {
+    if (val1 < val2) {
+        val1++;
+    }
+    if (val1 > val2) {
+        val1--;
+    }
+}
+
+void blendRGB(CRGB& col1, CRGB col2) {
+    blend(col1.r, col2.r);
+    blend(col1.g, col2.g);
+    blend(col1.b, col2.b);
+}
+
+void starBlend(bool init = false) {
+
+    CEveryNSeconds patternTimer(20);
+    uint8_t hue = random8(0, 250);
+    static CRGB col1;
+    if (init) {
+        init = false;
+        col1 = CHSV(hue, 250, 250);
+        CRGB startUp = CRGB(0, 0, 0);
+        while (startUp != col1) {
+            blendRGB(startUp, col1);
+            fill_solid(starLeds, cStarLedsCount, startUp);
+            starLedController.showLeds();
+            vTaskDelay(20);
+        }
+    }
+    while (true) {
+        if (patternTimer.ready()) {
+            starPattern = NULL;
+            return;
+        }
+        hue += 1370;
+        CRGB col2 = CHSV(hue, 250, 250);
+        //CRGB delta = col2 - col1;
+        while (col2 != col1) {
+            blendRGB(col1, col2);
+            fill_solid(starLeds, cStarLedsCount, col1);
+            starLedController.showLeds();
+            vTaskDelay(30);
+        }
+        col1 = col2;
     }
 }
 

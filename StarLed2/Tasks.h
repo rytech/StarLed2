@@ -13,8 +13,8 @@
 //
 //
 
-    void starTaskCode(void* pvParameters);
-    void rayTaskCode(void* pvParameters);
+    void starTaskCode();
+    void rayTaskCode();
 
     //typedef void (*starPatternList[])(bool);
     //starPatternList starPatterns = {
@@ -41,8 +41,8 @@
 
     void rayTaskCode(void* pvParameters) {
         while (1) {
-            //Serial.println("This is RayTask");
             if (rayPattern) {
+                Serial.println("This is RayTask");
                 rayPattern(true);
             }
             else {

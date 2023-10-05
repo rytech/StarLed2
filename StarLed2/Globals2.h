@@ -39,7 +39,7 @@
     CLEDController& rayLedController = FastLED.addLeds<LED_TYPE, RAYS_DATA_PIN, COLOR_ORDER>(rayLeds, cRayLedsCount);
 
     uint8_t starHue{ 15 };
-    uint8_t rayHue{ 34 };
+    uint8_t rayHue{ 80 };
 
     TaskHandle_t starTask;
     TaskHandle_t rayTask;
