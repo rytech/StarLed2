@@ -86,9 +86,11 @@ void nextPattern()
 }
 
 void createRunList() {
-    runList.push_back(runItem{ starBlend, rayTracer, 10});
-    runList.push_back(runItem{ juggle, rayWhiteTracer, 10});
     runList.push_back(runItem{ theaterChaseRainbow, raySkyBalls, 10});
-    runList.push_back(runItem{ starShift, rayWhiteTracer, 10});
-    runList.push_back(runItem{ starConfetti, raySkyBalls, 10});
+    //runList.push_back(runItem{ starBlend, rayTracer, 10});
+    //runList.push_back(runItem{ starConfetti, raySkyBalls, 10});
+    //runList.push_back(runItem{ juggle, rayWhiteTracer, 10});
+    //runList.push_back(runItem{ theaterChaseRainbow, raySkyBalls, 10});
+    //runList.push_back(runItem{ starRainbow, rayTracer, 10});
+    //runList.push_back(runItem{ starShift, rayWhiteTracer, 10});
 }

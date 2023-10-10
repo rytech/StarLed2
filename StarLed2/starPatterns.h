@@ -123,21 +123,21 @@ void starNova(bool init = false) {
         //    starPattern = NULL;
         //    return;
         //}
-        for (int j = 0; j < flashCount; j++) {
-            fill_solid(starLeds, cStarLedsCount, CRGB(64, 64, 64));
-            starLedController.showLeds();
-            vTaskDelay(FlashOnDelay);
-            fill_solid(starLeds, cStarLedsCount, CRGB(0, 0, 0));
-            starLedController.showLeds();
-            vTaskDelay(FlashOffDelay);
-        }
-        fill_solid(starLeds, cStarLedsCount, CRGB(250, 250, 250));
+    for (int j = 0; j < flashCount; j++) {
+        fill_solid(starLeds, cStarLedsCount, CRGB(64, 64, 64));
         starLedController.showLeds();
-        vTaskDelay(EndPause);
+        vTaskDelay(FlashOnDelay);
         fill_solid(starLeds, cStarLedsCount, CRGB(0, 0, 0));
         starLedController.showLeds();
-        starPattern = NULL;
-        return;
+        vTaskDelay(FlashOffDelay);
+    }
+    fill_solid(starLeds, cStarLedsCount, CRGB(250, 250, 250));
+    starLedController.showLeds();
+    vTaskDelay(EndPause);
+    fill_solid(starLeds, cStarLedsCount, CRGB(0, 0, 0));
+    starLedController.showLeds();
+    starPattern = NULL;
+    return;
     //}
     //delay(EndPause);
 }
@@ -164,61 +164,34 @@ void starNova(bool init = false) {
 //}
 
 
-void theaterChaseRainbow(bool init = true) {
+void theaterChaseRainbow(bool init = false) {
 
-    uint8_t* c;
-    CEveryNSeconds patternTimer(10);
+    CEveryNSeconds patternTimer(30);
 
     if (init) {
         init = false;
     }
 
     while (1) {
-        for (int j = 0; j < 256; j++) {     // cycle all 256 colors in the wheel
-            for (int q = 0; q < 3; q++) {
-                for (int i = 0; i < cStarLedsCount; i = i + 3) {
-                    c = Wheel((i + j) % 255);
-                    starLeds[i + q] = CRGB(*c, *(c + 1), *(c + 2));    //turn every third pixel on
-                }
-                starLedController.showLeds();
-
-                delay(100);
-
-                for (int i = 0; i < cStarLedsCount; i = i + 3) {
-                    starLeds[i+q] = CRGB(0, 0, 0);
-                }
-                if (patternTimer.ready()) {
-                    starPattern = NULL;
-                    return;
-                }
+        for (int offset = 0; offset < 3; offset++) {
+            for (int i = 0; i < cStarLedsCount; i++) {
+                uint8_t x1 = beatsin8(5, 0, 250);
+                uint8_t x2 = beatsin8(6, 0, 250, 0, 90);
+                uint8_t x3 = beatsin8(6, 0, 250, 0, 180);
+                //std::cout << "x1 = " << x1 << " x2 = " << x2 << " x3 = " << x3 << std::endl;
+                starLeds[i] = CRGB(x1, x2, x3);
+            }
+            for (int i = offset; i < cStarLedsCount; i=i+3) {
+                    starLeds[i] = CRGB(0, 0, 0);    //turn every third pixel off
+            }
+            starLedController.showLeds();
+            vTaskDelay(100);
+            if (patternTimer.ready()) {
+                starPattern = NULL;
+                return;
             }
         }
     }
-}
-
-// used by rainbowCycle and theaterChaseRainbow
-uint8_t* Wheel(uint8_t WheelPos) {
-    static uint8_t c[3];
-
-    if (WheelPos < 85) {
-        c[0] = WheelPos * 3;
-        c[1] = 255 - WheelPos * 3;
-        c[2] = 0;
-    }
-    else if (WheelPos < 170) {
-        WheelPos -= 85;
-        c[0] = 255 - WheelPos * 3;
-        c[1] = 0;
-        c[2] = WheelPos * 3;
-    }
-    else {
-        WheelPos -= 170;
-        c[0] = 0;
-        c[1] = WheelPos * 3;
-        c[2] = 255 - WheelPos * 3;
-    }
-
-    return c;
 }
 
 //void rainbowWithGlitter()

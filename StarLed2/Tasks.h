@@ -42,7 +42,7 @@
     void rayTaskCode(void* pvParameters) {
         while (1) {
             if (rayPattern) {
-                Serial.println("This is RayTask");
+                //Serial.println("This is RayTask");
                 rayPattern(true);
             }
             else {
