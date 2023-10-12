@@ -4,17 +4,14 @@
  Author:	rytec
 */
 
-#include <FastLED.h>
+#include <iostream>
 #include <vector>
+#include <FastLED.h>
 #include "Globals2.h"
 #include "Tasks.h"
 #include "raySkyBalls.h"
 #include "starPatterns.h"
 #include "rayPatterns.h"
-//#include "starRainbow.h"
-//#include "rayTracer.h"
-//#include "confetti.h"
-//#include "starSparkle.h"
 
 void setup() {
 
@@ -86,11 +83,11 @@ void nextPattern()
 }
 
 void createRunList() {
+    runList.push_back(runItem{ colorWipe, rayTracer, 10});
+    runList.push_back(runItem{ starBlend, rayTracer, 10});
+    runList.push_back(runItem{ starConfetti, raySkyBalls, 10});
+    runList.push_back(runItem{ juggle, rayWhiteTracer, 10});
     runList.push_back(runItem{ theaterChaseRainbow, raySkyBalls, 10});
-    //runList.push_back(runItem{ starBlend, rayTracer, 10});
-    //runList.push_back(runItem{ starConfetti, raySkyBalls, 10});
-    //runList.push_back(runItem{ juggle, rayWhiteTracer, 10});
-    //runList.push_back(runItem{ theaterChaseRainbow, raySkyBalls, 10});
-    //runList.push_back(runItem{ starRainbow, rayTracer, 10});
-    //runList.push_back(runItem{ starShift, rayWhiteTracer, 10});
+    runList.push_back(runItem{ starRainbow, rayTracer, 10});
+    runList.push_back(runItem{ starShift, rayWhiteTracer, 10});
 }

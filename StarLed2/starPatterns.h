@@ -30,11 +30,10 @@ uint8_t* Wheel(uint8_t WheelPos);
 
 void starRainbow(bool init = 0)
 {
-    //uint8_t lHue = 20;
-    CEveryNSeconds patternTimer(10);
+    CEveryNSeconds patternTimer(20);
 
     if (init) {
-        Serial.println("starRainbow init");
+        //Serial.println("starRainbow init");
     }
     while (1) {
         if (patternTimer.ready()) {
@@ -45,7 +44,7 @@ void starRainbow(bool init = 0)
         fill_rainbow(starLeds, cStarLedsCount, starHue +=3, 3);
         starLedController.showLeds();
         //lj_fill_rainbow(starLeds, cStarLedsCount, lHue += 3, 3);
-        vTaskDelay(100);
+        vTaskDelay(50);
     }
 }
 
@@ -390,6 +389,29 @@ void starBlend(bool init = false) {
     }
 }
 
+void colorWipe(bool init = false) {
+    
+    CEveryNSeconds patternTimer(30);
+
+    if (init) {
+        std::cout << "colorWipe" << std::endl;
+        init = false;
+    }
+    for (int i = 0 ; i <2; i++) {
+        uint8_t r = random8(150);
+        uint8_t g = random8(180);
+        uint8_t b = random8(200);
+        for (int i = 0; i < cStarLedsCount; i++) {
+            starLeds[i] = CRGB(r, g, b);
+            starLedController.showLeds();
+            vTaskDelay(50);
+        }
+        vTaskDelay(200);
+        fill_solid(starLeds, cStarLedsCount, CRGB(0, 0, 0));
+    }
+    starPattern = NULL;
+    return;
+}
 
 #endif
 
