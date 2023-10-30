@@ -18,14 +18,6 @@ void starNova(bool init);
 void juggle(bool init);
 void theaterChaseRainbow(bool init);
 
-// helper function
-uint8_t* Wheel(uint8_t WheelPos);
-
-//void starRainbow(bool bInit = false)
-//{
-//    // FastLED's built-in rainbow generator
-//    fill_rainbow(starLeds, cStarLedsCount, gHue++, 7);
-//}
 
 
 void starRainbow(bool init = 0)
@@ -410,6 +402,44 @@ void colorWipe(bool init = false) {
         fill_solid(starLeds, cStarLedsCount, CRGB(0, 0, 0));
     }
     starPattern = NULL;
+    std::cout << "colorWipe out" << std::endl;
+    return;
+}
+
+void rayWhiteTracer(bool init);
+
+// helper function
+void flash(uint8_t level, bool offFlag) {
+    for (uint8_t i = 0; i <= level; i += 10) {
+        fill_solid(starLeds, cStarLedsCount, CRGB(i, i, i));
+        starLedController.showLeds();
+        vTaskDelay(20);
+    }
+    vTaskDelay(500);
+    if (offFlag) {
+        fill_solid(starLeds, cStarLedsCount, CRGB(0, 0, 0));
+        starLedController.showLeds();
+        vTaskDelay(1000);
+        return;
+    }
+}
+
+void starFinale(bool init = false) {
+    CEveryNSeconds patternTimer(10);
+
+    if (init) {
+        //std::cout << "starFinale" << std::endl;
+        init = false;
+    }
+    flash(40, true);
+    flash(80, true);
+    flash(150, false);
+    rayPattern = rayWhiteTracer;
+    vTaskDelay(3500);
+    rayPattern = nullptr;
+    fill_solid(rayLeds, cRayLedsCount, CRGB(0, 0, 0));
+    rayLedController.showLeds();
+    starConfetti();
     return;
 }
 

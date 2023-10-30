@@ -50,7 +50,6 @@ void rayWhiteTracer(bool init = 0) {
 	uint8_t prevPos = 0;
 	uint32_t timebase = millis() & 0xFFFFFF00;
 
-	Serial.println("rayWhiteTracer in");
 	//if (init) {
 	//	init = false;
 	//}
@@ -62,7 +61,7 @@ void rayWhiteTracer(bool init = 0) {
 		}
 		prevPos = pos;
 		int ledNo = (pos * cRayLedsCount) / 255;
-		rayLeds[ledNo] = CRGB(200, 200, 200);
+		rayLeds[ledNo] = CRGB(180, 180, 180);
 		rayLedController.showLeds();
 		vTaskDelay(20);
 	}

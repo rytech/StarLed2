@@ -15,9 +15,8 @@
 
 void setup() {
 
-    Serial.begin(115200);
+    Serial.begin(115200);        // default 115200
     while (!Serial);
-    //Serial.println("debug message");
 
     //TaskHandle_t Task1; // create a task handle
     //xTaskCreatePinnedToCore(
@@ -85,9 +84,10 @@ void nextPattern()
 void createRunList() {
     runList.push_back(runItem{ colorWipe, rayTracer, 10});
     runList.push_back(runItem{ starBlend, rayTracer, 10});
-    runList.push_back(runItem{ starConfetti, raySkyBalls, 10});
+    //runList.push_back(runItem{ starConfetti, raySkyBalls, 10});
     runList.push_back(runItem{ juggle, rayWhiteTracer, 10});
     runList.push_back(runItem{ theaterChaseRainbow, raySkyBalls, 10});
     runList.push_back(runItem{ starRainbow, rayTracer, 10});
     runList.push_back(runItem{ starShift, rayWhiteTracer, 10});
+    runList.push_back(runItem{ starFinale, nullptr, 10});
 }
